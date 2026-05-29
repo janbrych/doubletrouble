@@ -25,41 +25,73 @@
             padding: 2rem;
             max-width: 800px;
             z-index: 1;
+            width: 90%;
         }
 
         h1 {
             font-size: 3.5rem;
             text-transform: uppercase;
             letter-spacing: 0.5rem;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
             text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
             color: #fff;
         }
 
-        p {
+        p.subtitle {
             font-size: 1.2rem;
             color: #888;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
             font-style: italic;
         }
 
-        .playlist-wrapper {
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 */
-            height: 0;
-            width: 100%;
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.1);
+        .audio-player-container {
+            background: rgba(20, 20, 20, 0.8);
             border: 1px solid #333;
-            border-radius: 8px;
-            overflow: hidden;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
         }
 
-        .playlist-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .track {
+            margin-bottom: 2.5rem;
+            text-align: left;
+        }
+
+        .track:last-child {
+            margin-bottom: 0;
+        }
+
+        .track h3 {
+            margin-top: 0;
+            margin-bottom: 0.8rem;
+            color: #fff;
+            font-weight: 300;
+            letter-spacing: 0.1rem;
+            border-left: 3px solid #cc0000;
+            padding-left: 1rem;
+        }
+
+        audio {
             width: 100%;
-            height: 100%;
+            height: 40px;
+            filter: invert(100%) hue-rotate(180deg) brightness(1.5);
+            margin-bottom: 0.5rem;
+        }
+
+        .attribution {
+            font-size: 0.75rem;
+            color: #666;
+            margin: 0;
+        }
+
+        .attribution a {
+            color: #888;
+            text-decoration: none;
+        }
+
+        .attribution a:hover {
+            text-decoration: underline;
         }
 
         .background-overlay {
@@ -69,7 +101,7 @@
             width: 100%;
             height: 100%;
             background: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=2070') no-repeat center center/cover;
-            opacity: 0.15;
+            opacity: 0.1;
             z-index: 0;
             filter: grayscale(100%);
         }
@@ -79,23 +111,37 @@
             color: #444;
             font-size: 0.8rem;
         }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; letter-spacing: 0.2rem; }
+            .audio-player-container { padding: 1rem; }
+        }
     </style>
 </head>
 <body>
     <div class="background-overlay"></div>
     <div class="container">
         <h1>EPIC MOMENTS</h1>
-        <p>Zažij sílu kinematografické hudby</p>
+        <p class="subtitle">Zažij sílu kinematografické hudby</p>
 
-        <div class="playlist-wrapper">
-            <!-- YouTube Playlist: Epic Cinematic Music -->
-            <iframe
-                src="https://www.youtube.com/embed/videoseries?list=PL3-sRm86SshZk9XkP9-YqU2P-n_yS5-0N"
-                title="YouTube video player"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen>
-            </iframe>
+        <div class="audio-player-container">
+            <div class="track">
+                <h3>In Dreams</h3>
+                <audio controls>
+                    <source src="music/in_dreams.mp3" type="audio/mpeg">
+                    Váš prohlížeč nepodporuje element audio.
+                </audio>
+                <p class="attribution">'In Dreams' by Scott Buckley - released under CC-BY 4.0. <a href="https://www.scottbuckley.com.au" target="_blank">www.scottbuckley.com.au</a></p>
+            </div>
+
+            <div class="track">
+                <h3>The Summoning</h3>
+                <audio controls>
+                    <source src="music/the_summoning.mp3" type="audio/mpeg">
+                    Váš prohlížeč nepodporuje element audio.
+                </audio>
+                <p class="attribution">'The Summoning' by Scott Buckley - released under CC-BY 4.0. <a href="https://www.scottbuckley.com.au" target="_blank">www.scottbuckley.com.au</a></p>
+            </div>
         </div>
 
         <footer>
