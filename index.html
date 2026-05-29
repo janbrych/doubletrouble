@@ -3,27 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sedící a stojící člověk</title>
+    <title>Double Trouble - Sjednocený Projekt</title>
     <style>
         body {
+            margin: 0;
+            padding: 0;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            width: 100%;
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-            font-family: sans-serif;
-            user-select: none;
+            gap: 1rem;
+            border-bottom: 1px solid #333;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
         }
-        .container {
+
+        nav button {
+            background: transparent;
+            border: 1px solid #555;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        nav button:hover, nav button.active {
+            background: #fff;
+            color: #000;
+        }
+
+        .tab-content {
+            display: none;
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 0;
+        }
+
+        .tab-content.active {
+            display: flex;
+        }
+
+        /* --- FEATURE: PERSON --- */
+        .person-container {
             text-align: center;
             cursor: pointer;
             background: white;
             padding: 2rem;
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            color: #333;
         }
-        svg {
+        .person-svg {
             width: 200px;
             height: 300px;
         }
@@ -39,19 +85,16 @@
             stroke: none;
             transition: all 0.5s ease-in-out;
         }
-
-        /* Standing State (Default) */
         .leg-l { d: path("M 100 180 L 80 280"); }
         .leg-r { d: path("M 100 180 L 120 280"); }
         .torso { d: path("M 100 80 L 100 180"); }
-        .head { cy: 50; }
+        .person-head { cy: 50; }
         .arms { d: path("M 70 120 L 130 120"); }
 
-        /* Sitting State */
         .sitting .leg-l { d: path("M 100 230 L 60 230 L 60 280"); }
         .sitting .leg-r { d: path("M 100 230 L 140 230 L 140 280"); }
         .sitting .torso { d: path("M 100 130 L 100 230"); }
-        .sitting .head { cy: 100; }
+        .sitting .person-head { cy: 100; }
         .sitting .arms { d: path("M 70 170 L 130 170"); }
 
         .instruction {
@@ -59,31 +102,151 @@
             color: #666;
             font-weight: bold;
         }
+
+        /* --- FEATURE: MUSIC --- */
+        .music-wrapper {
+            text-align: center;
+            padding: 2rem;
+            max-width: 800px;
+            width: 90%;
+        }
+        .music-wrapper h1 {
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+        .playlist-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+        .playlist-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* --- FEATURE: WINDOW --- */
+        .window-container {
+            position: relative;
+            width: 400px;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 10px solid #5d4037;
+            background-color: #87CEEB;
+            overflow: hidden;
+        }
+        .background-plane {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1569154941061-e231b4725ef1?q=80&w=1000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+        }
+        .blinds {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(to bottom, #ddd, #ddd 10px, #bbb 11px, #bbb 12px);
+            z-index: 2;
+            transition: transform 1s ease-in-out;
+        }
+        .shutter {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?q=80&w=500&auto=format&fit=crop');
+            background-size: cover;
+            z-index: 3;
+            transition: transform 1.2s ease-in-out;
+            box-sizing: border-box;
+            border: 1px solid #3e2723;
+        }
+        .shutter.left { left: 0; transform-origin: left; }
+        .shutter.right { right: 0; transform-origin: right; }
+        .window-container.open .shutter.left { transform: rotateY(-130deg); }
+        .window-container.open .shutter.right { transform: rotateY(130deg); }
+        .window-container.open .blinds { transform: translateY(-100%); transition-delay: 1.2s; }
+        .window-container:not(.open) .blinds { transition-delay: 0s; }
+        .window-container:not(.open) .shutter { transition-delay: 1s; }
+        .shutter::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.2); }
     </style>
 </head>
 <body>
-    <div class="container" id="app">
-        <svg viewBox="0 0 200 300" id="person-svg">
-            <!-- Torso -->
-            <path class="person-part torso" d="M 100 80 L 100 180" />
-            <!-- Head -->
-            <circle class="head" cx="100" cy="50" r="25" />
-            <!-- Arms -->
-            <path class="person-part arms" d="M 70 120 L 130 120" />
-            <!-- Legs -->
-            <path class="person-part leg-l" d="M 100 180 L 80 280" />
-            <path class="person-part leg-r" d="M 100 180 L 120 280" />
-        </svg>
-        <div class="instruction">Klikni na mě!</div>
+    <nav>
+        <button onclick="showTab('person')" id="btn-person">Člověk</button>
+        <button onclick="showTab('music')" id="btn-music">Hudba</button>
+        <button onclick="showTab('window')" id="btn-window">Okno</button>
+    </nav>
+
+    <div id="person" class="tab-content">
+        <div class="person-container" id="person-app">
+            <svg viewBox="0 0 200 300" class="person-svg" id="person-svg">
+                <path class="person-part torso" d="M 100 80 L 100 180" />
+                <circle class="head person-head" cx="100" cy="50" r="25" />
+                <path class="person-part arms" d="M 70 120 L 130 120" />
+                <path class="person-part leg-l" d="M 100 180 L 80 280" />
+                <path class="person-part leg-r" d="M 100 180 L 120 280" />
+            </svg>
+            <div class="instruction">Klikni na mě!</div>
+        </div>
+    </div>
+
+    <div id="music" class="tab-content">
+        <div class="music-wrapper">
+            <h1>EPIC MOMENTS</h1>
+            <div class="playlist-wrapper">
+                <iframe src="https://www.youtube.com/embed/videoseries?list=PL3-sRm86SshZk9XkP9-YqU2P-n_yS5-0N" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div id="window" class="tab-content">
+        <div class="window-container" id="window-app">
+            <div class="background-plane"></div>
+            <div class="blinds"></div>
+            <div class="shutter left"></div>
+            <div class="shutter right"></div>
+        </div>
     </div>
 
     <script>
-        const app = document.getElementById('app');
-        const svg = document.getElementById('person-svg');
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            document.getElementById('btn-' + tabId).classList.add('active');
+        }
 
-        app.addEventListener('click', () => {
-            svg.classList.toggle('sitting');
+        // Person Toggle
+        document.getElementById('person-app').addEventListener('click', () => {
+            document.getElementById('person-svg').classList.toggle('sitting');
         });
+
+        // Window Toggle
+        document.getElementById('window-app').addEventListener('click', () => {
+            document.getElementById('window-app').classList.toggle('open');
+        });
+
+        // Default tab
+        showTab('person');
     </script>
 </body>
 </html>
