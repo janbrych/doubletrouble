@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sedící a stojící člověk</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: sans-serif;
+            user-select: none;
+        }
+        .container {
+            text-align: center;
+            cursor: pointer;
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        svg {
+            width: 200px;
+            height: 300px;
+        }
+        .person-part {
+            stroke: #333;
+            stroke-width: 8;
+            stroke-linecap: round;
+            fill: none;
+            transition: all 0.5s ease-in-out;
+        }
+        .head {
+            fill: #333;
+            stroke: none;
+            transition: all 0.5s ease-in-out;
+        }
+
+        /* Standing State (Default) */
+        .leg-l { d: path("M 100 180 L 80 280"); }
+        .leg-r { d: path("M 100 180 L 120 280"); }
+        .torso { d: path("M 100 80 L 100 180"); }
+        .head { cy: 50; }
+        .arms { d: path("M 70 120 L 130 120"); }
+
+        /* Sitting State */
+        .sitting .leg-l { d: path("M 100 230 L 60 230 L 60 280"); }
+        .sitting .leg-r { d: path("M 100 230 L 140 230 L 140 280"); }
+        .sitting .torso { d: path("M 100 130 L 100 230"); }
+        .sitting .head { cy: 100; }
+        .sitting .arms { d: path("M 70 170 L 130 170"); }
+
+        .instruction {
+            margin-top: 20px;
+            color: #666;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="app">
+        <svg viewBox="0 0 200 300" id="person-svg">
+            <!-- Torso -->
+            <path class="person-part torso" d="M 100 80 L 100 180" />
+            <!-- Head -->
+            <circle class="head" cx="100" cy="50" r="25" />
+            <!-- Arms -->
+            <path class="person-part arms" d="M 70 120 L 130 120" />
+            <!-- Legs -->
+            <path class="person-part leg-l" d="M 100 180 L 80 280" />
+            <path class="person-part leg-r" d="M 100 180 L 120 280" />
+        </svg>
+        <div class="instruction">Klikni na mě!</div>
+    </div>
+
+    <script>
+        const app = document.getElementById('app');
+        const svg = document.getElementById('person-svg');
+
+        app.addEventListener('click', () => {
+            svg.classList.toggle('sitting');
+        });
+    </script>
+</body>
+</html>
