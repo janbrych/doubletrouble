@@ -3,25 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Otevírací dveře a okno</title>
+    <title>Interaktivní Scéna - Dveře, Okno a Letadlo</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="scene">
-        <!-- Window Layer (Behind) -->
-        <div class="window-container" id="window">
-            <div class="background-plane"></div>
-            <div class="blinds" id="blinds"></div>
-            <div class="shutter left"></div>
-            <div class="shutter right"></div>
+    <div class="main-container">
+        <!-- Person on the left -->
+        <div class="person-wrapper" id="person-app">
+            <svg viewBox="0 0 200 300" class="person-svg" id="person-svg">
+                <path class="person-part torso" d="M 100 80 L 100 180" />
+                <circle class="head person-head" cx="100" cy="50" r="25" />
+                <path class="person-part arms" d="M 70 120 L 130 120" />
+                <path class="person-part leg-l" d="M 100 180 L 80 280" />
+                <path class="person-part leg-r" d="M 100 180 L 120 280" />
+            </svg>
+            <div class="instruction">Klikni na mě!</div>
         </div>
 
-        <!-- Door Layer (In Front) -->
-        <div class="door-container" id="door">
-            <div class="door-leaf left"></div>
-            <div class="door-leaf right"></div>
+        <!-- Central Scene: Door & Window -->
+        <div class="scene">
+            <!-- Window Layer (Behind) -->
+            <div class="window-container" id="window">
+                <div class="background-plane">
+                    <div class="airplane" id="airplane"></div>
+                </div>
+                <div class="blinds" id="blinds"></div>
+                <div class="shutter left"></div>
+                <div class="shutter right"></div>
+            </div>
+
+            <!-- Door Layer (In Front) -->
+            <div class="door-container" id="door">
+                <div class="door-leaf left"></div>
+                <div class="door-leaf right"></div>
+                <div class="door-instruction">Otevři dveře</div>
+            </div>
         </div>
     </div>
+
+    <!-- Hidden Music Player -->
+    <div id="music-container" style="display:none;">
+        <iframe id="youtube-player"
+            src="https://www.youtube.com/embed/videoseries?list=PL3-sRm86SshZk9XkP9-YqU2P-n_yS5-0N&enablejsapi=1&autoplay=0"
+            allow="autoplay">
+        </iframe>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

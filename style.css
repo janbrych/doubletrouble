@@ -4,14 +4,69 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #f0f0f0;
-    font-family: sans-serif;
+    background-color: #0a0a0a;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    color: #fff;
 }
 
+.main-container {
+    display: flex;
+    align-items: center;
+    gap: 100px;
+}
+
+/* --- PERSON STYLES --- */
+.person-wrapper {
+    text-align: center;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    transition: transform 0.3s;
+}
+.person-wrapper:hover {
+    transform: scale(1.05);
+}
+.person-svg {
+    width: 150px;
+    height: 250px;
+}
+.person-part {
+    stroke: #fff;
+    stroke-width: 8;
+    stroke-linecap: round;
+    fill: none;
+    transition: all 0.5s ease-in-out;
+}
+.head {
+    fill: #fff;
+    stroke: none;
+}
+.leg-l { d: path("M 100 180 L 80 280"); }
+.leg-r { d: path("M 100 180 L 120 280"); }
+.torso { d: path("M 100 80 L 100 180"); }
+.person-head { cy: 50; }
+.arms { d: path("M 70 120 L 130 120"); }
+
+.sitting .leg-l { d: path("M 100 230 L 60 230 L 60 280"); }
+.sitting .leg-r { d: path("M 100 230 L 140 230 L 140 280"); }
+.sitting .torso { d: path("M 100 130 L 100 230"); }
+.sitting .person-head { cy: 100; }
+.sitting .arms { d: path("M 70 170 L 130 170"); }
+
+.instruction {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+/* --- SCENE STYLES --- */
 .scene {
     position: relative;
-    width: 600px;
-    height: 500px;
+    width: 500px;
+    height: 400px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,12 +83,10 @@ body {
     cursor: pointer;
     transition: visibility 0s 1.5s;
 }
-
 .door-container.open {
     visibility: hidden;
     pointer-events: none;
 }
-
 .door-leaf {
     width: 50%;
     height: 100%;
@@ -45,33 +98,33 @@ body {
     transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
 }
+.door-leaf.left { transform-origin: left; }
+.door-leaf.right { transform-origin: right; }
+.door-container.open .door-leaf.left { transform: rotateY(-110deg); }
+.door-container.open .door-leaf.right { transform: rotateY(110deg); }
 
-.door-leaf.left {
-    transform-origin: left;
+.door-instruction {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.7);
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    pointer-events: none;
 }
 
-.door-leaf.right {
-    transform-origin: right;
-}
-
-.door-container.open .door-leaf.left {
-    transform: rotateY(-110deg);
-}
-
-.door-container.open .door-leaf.right {
-    transform: rotateY(110deg);
-}
-
-/* Window Styles (behind door) */
+/* Window Styles */
 .window-container {
     position: relative;
-    width: 400px;
-    height: 300px;
+    width: 350px;
+    height: 250px;
     perspective: 1000px;
     cursor: pointer;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    border: 10px solid #5d4037;
-    background-color: #87CEEB;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border: 8px solid #5d4037;
+    background-color: #000;
     overflow: hidden;
     z-index: 1;
 }
@@ -82,10 +135,30 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('https://images.unsplash.com/photo-1569154941061-e231b4725ef1?q=80&w=1000&auto=format&fit=crop');
+    background-image: url('https://images.unsplash.com/photo-1506012733827-e929b84a9b58?q=80&w=1000&auto=format&fit=crop'); /* Runway/Sky background */
     background-size: cover;
     background-position: center;
     z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.airplane {
+    width: 150px;
+    height: 80px;
+    background-image: url('https://images.unsplash.com/photo-1559133965-f8166ae63332?q=80&w=1000&auto=format&fit=crop');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    transition: transform 3s ease-in-out, opacity 3s;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+}
+
+.airplane.fly-away {
+    transform: translate(500px, -300px) scale(0.1) rotate(-10deg);
+    opacity: 0;
 }
 
 .blinds {
@@ -94,13 +167,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: repeating-linear-gradient(
-        to bottom,
-        #ddd,
-        #ddd 10px,
-        #bbb 11px,
-        #bbb 12px
-    );
+    background: repeating-linear-gradient(to bottom, #ddd, #ddd 10px, #bbb 11px, #bbb 12px);
     z-index: 2;
     transition: transform 1s ease-in-out;
 }
@@ -117,33 +184,13 @@ body {
     box-sizing: border-box;
     border: 1px solid #3e2723;
 }
+.shutter.left { left: 0; transform-origin: left; }
+.shutter.right { right: 0; transform-origin: right; }
 
-.shutter.left {
-    left: 0;
-    transform-origin: left;
-}
-
-.shutter.right {
-    right: 0;
-    transform-origin: right;
-}
-
-/* Window Animation Sequence */
-.window-container.open .shutter.left {
-    transform: rotateY(-130deg);
-}
-.window-container.open .shutter.right {
-    transform: rotateY(130deg);
-}
-.window-container.open .blinds {
-    transform: translateY(-100%);
-    transition-delay: 1.2s;
-}
+.window-container.open .shutter.left { transform: rotateY(-130deg); }
+.window-container.open .shutter.right { transform: rotateY(130deg); }
+.window-container.open .blinds { transform: translateY(-100%); transition-delay: 1.2s; }
 
 /* Timing for closing */
-.window-container:not(.open) .shutter {
-    transition-delay: 1s;
-}
-.window-container:not(.open) .blinds {
-    transition-delay: 0s;
-}
+.window-container:not(.open) .shutter { transition-delay: 1s; }
+.window-container:not(.open) .blinds { transition-delay: 0s; }
