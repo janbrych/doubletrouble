@@ -1,0 +1,7 @@
+node_modules/
+test-results/
+*.png
+server.log
+package.json
+package-lock.json
+verify_v2.spec.ts

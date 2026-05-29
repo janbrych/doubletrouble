@@ -3,15 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Otevírací okno</title>
+    <title>Otevírací dveře a okno</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="window-container" id="window">
-        <div class="background-plane"></div>
-        <div class="blinds" id="blinds"></div>
-        <div class="shutter left"></div>
-        <div class="shutter right"></div>
+    <div class="scene">
+        <!-- Window Layer (Behind) -->
+        <div class="window-container" id="window">
+            <div class="background-plane"></div>
+            <div class="blinds" id="blinds"></div>
+            <div class="shutter left"></div>
+            <div class="shutter right"></div>
+        </div>
+
+        <!-- Door Layer (In Front) -->
+        <div class="door-container" id="door">
+            <div class="door-leaf left"></div>
+            <div class="door-leaf right"></div>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
